@@ -1,8 +1,8 @@
 package com.example.professionalandroidapplicationdevelopment.model.datasource
 
-import io.reactivex.Observable
+import android.database.Observable
 
 interface DataSource<T> {
 
-    fun getData(word:String):Observable<T>
+    suspend fun getData(word: String): T
 }
