@@ -65,6 +65,13 @@ dependencies {
     implementation "io.insert-koin:koin-android:$koin_version"
     //Koin Java Compatibility
     implementation "io.insert-koin:koin-android-compat:$koin_version"
+    //Coil
+    implementation 'io.coil-kt:coil:0.11.0'
+
+    //Room
+    implementation 'androidx.room:room-runtime:2.3.0'
+    kapt 'androidx.room:room-compiler:2.3.0'
+    implementation 'androidx.room:room-ktx:2.3.0'
 
     //Test
     testImplementation 'junit:junit:4.12'
