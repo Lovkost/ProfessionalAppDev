@@ -3,11 +3,9 @@ package com.example.professionalandroidapplicationdevelopment.view.main.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.professionalandroidapplicationdevelopment.R
-import com.example.professionalandroidapplicationdevelopment.model.data.DataModel
+import com.example.model.data.userdata.DataModel
 import com.example.professionalandroidapplicationdevelopment.utils.convertMeaningsToString
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
 
