@@ -1,12 +1,11 @@
 package com.example.repository
 
-import com.example.model.data.AppState
-import com.example.model.data.DataModel
+import com.example.model.data.userdata.DataModel
 
-class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<com.example.model.data.DataModel>>) :
-    RepositoryLocal<List<com.example.model.data.DataModel>> {
+class RepositoryImplementationLocal(private val dataSource: DataSourceLocal<List<DataModel>>) :
+    RepositoryLocal<List<DataModel>> {
 
-    override suspend fun getData(word: String): List<com.example.model.data.DataModel> {
+    override suspend fun getData(word: String): List<DataModel> {
         return dataSource.getData(word)
     }
 

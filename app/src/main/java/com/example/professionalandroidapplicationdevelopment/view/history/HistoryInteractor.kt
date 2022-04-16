@@ -1,23 +1,26 @@
 package com.example.professionalandroidapplicationdevelopment.view.history
 
+import com.example.core.viewmodel.Interactor
 import com.example.model.data.AppState
-import com.example.model.data.DataModel
+import com.example.professionalandroidapplicationdevelopment.utils.mapSearchResultToResult
 import com.example.repository.Repository
 import com.example.repository.RepositoryLocal
-import com.example.core.viewmodel.Interactor
+import geekbrains.ru.model.data.dto.SearchResultDto
 
 class HistoryInteractor(
-    private val repositoryRemote: com.example.repository.Repository<List<com.example.model.data.DataModel>>,
-    private val repositoryLocal: com.example.repository.RepositoryLocal<List<com.example.model.data.DataModel>>
-) : com.example.core.viewmodel.Interactor<com.example.model.data.AppState> {
+    private val repositoryRemote: Repository<List<SearchResultDto>>,
+    private val repositoryLocal: RepositoryLocal<List<SearchResultDto>>
+) : Interactor<AppState> {
 
-    override suspend fun getData(word: String, fromRemoteSource: Boolean): com.example.model.data.AppState {
-        return com.example.model.data.AppState.Success(
-            if (fromRemoteSource) {
-                repositoryRemote
-            } else {
-                repositoryLocal
-            }.getData(word)
+    override suspend fun getData(word: String, fromRemoteSource: Boolean): AppState {
+        return AppState.Success(
+            mapSearchResultToResult(
+                if (fromRemoteSource) {
+                    repositoryRemote
+                } else {
+                    repositoryLocal
+                }.getData(word)
+            )
         )
     }
 }

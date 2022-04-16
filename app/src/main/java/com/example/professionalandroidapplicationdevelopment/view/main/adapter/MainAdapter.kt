@@ -5,16 +5,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.professionalandroidapplicationdevelopment.R
-import com.example.model.data.DataModel
+import com.example.model.data.userdata.DataModel
 import com.example.professionalandroidapplicationdevelopment.utils.convertMeaningsToString
 import kotlinx.android.synthetic.main.activity_main_recyclerview_item.view.*
 
 class MainAdapter(private var onListItemClickListener: OnListItemClickListener) :
     RecyclerView.Adapter<MainAdapter.RecyclerItemViewHolder>() {
 
-    private var data: List<com.example.model.data.DataModel> = arrayListOf()
+    private var data: List<DataModel> = arrayListOf()
 
-    fun setData(data: List<com.example.model.data.DataModel>) {
+    fun setData(data: List<DataModel>) {
         this.data = data
         notifyDataSetChanged()
     }
@@ -36,7 +36,7 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener) 
 
     inner class RecyclerItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(data: com.example.model.data.DataModel) {
+        fun bind(data: DataModel) {
             if (layoutPosition != RecyclerView.NO_POSITION) {
                 itemView.header_textview_recycler_item.text = data.text
                 itemView.description_textview_recycler_item.text = convertMeaningsToString(data.meanings!!)
@@ -45,11 +45,11 @@ class MainAdapter(private var onListItemClickListener: OnListItemClickListener) 
         }
     }
 
-    private fun openInNewWindow(listItemData: com.example.model.data.DataModel) {
+    private fun openInNewWindow(listItemData: DataModel) {
         onListItemClickListener.onItemClick(listItemData)
     }
 
     interface OnListItemClickListener {
-        fun onItemClick(data: com.example.model.data.DataModel)
+        fun onItemClick(data: DataModel)
     }
 }

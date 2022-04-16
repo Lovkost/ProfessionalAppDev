@@ -1,8 +1,7 @@
 package com.example.professionalandroidapplicationdevelopment.utils
 
 import com.example.model.data.AppState
-import com.example.model.data.DataModel
-import com.example.model.data.Meanings
+import com.example.model.data.userdata.DataModel
 
 
 fun parseLocalSearchResults(data: AppState): AppState {

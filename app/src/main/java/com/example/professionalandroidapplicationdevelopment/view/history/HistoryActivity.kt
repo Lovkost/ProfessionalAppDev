@@ -3,8 +3,7 @@ package com.example.professionalandroidapplicationdevelopment.view.history
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.example.professionalandroidapplicationdevelopment.databinding.ActivityHistoryBinding
-import com.example.model.data.AppState
-import com.example.model.data.DataModel
+import com.example.model.data.userdata.DataModel
 import com.example.professionalandroidapplicationdevelopment.view.base.BaseActivity
 import org.koin.android.compat.ScopeCompat.viewModel
 
@@ -28,7 +27,7 @@ class HistoryActivity : BaseActivity<com.example.model.data.AppState, HistoryInt
         model.getData("", false)
     }
 
-    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
+    override fun setDataToAdapter(data: List<DataModel>) {
         adapter.setData(data)
     }
 

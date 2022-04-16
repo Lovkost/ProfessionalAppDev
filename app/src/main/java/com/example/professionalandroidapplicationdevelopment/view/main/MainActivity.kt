@@ -5,26 +5,28 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.RecyclerView
+import com.example.core.BaseActivity
+import com.example.model.data.AppState
+import com.example.model.data.userdata.DataModel
 import com.example.professionalandroidapplicationdevelopment.R
 import com.example.professionalandroidapplicationdevelopment.databinding.ActivityMainBinding
-import com.example.model.data.AppState
-import com.example.model.data.DataModel
-import com.example.professionalandroidapplicationdevelopment.utils.convertMeaningsToString
-import com.example.utils.network.isOnline
-import com.example.professionalandroidapplicationdevelopment.view.base.BaseActivity
 import com.example.professionalandroidapplicationdevelopment.view.descriptionscreen.DescriptionActivity
 import com.example.professionalandroidapplicationdevelopment.view.history.HistoryActivity
 import com.example.professionalandroidapplicationdevelopment.view.main.adapter.MainAdapter
-import org.koin.android.compat.ScopeCompat.viewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import org.koin.androidx.scope.currentScope
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
-class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteractor>() {
+class MainActivity : BaseActivity<AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
     override lateinit var model: MainViewModel
     private val adapter: MainAdapter by lazy { MainAdapter(onListItemClickListener) }
+    private val mainActivityRecyclerview by viewById<RecyclerView>(R.id.main_activity_recyclerview)
+    private val searchFAB by viewById<FloatingActionButton>(R.id.search_fab)
+
     private val fabClickListener: View.OnClickListener =
         View.OnClickListener {
             val searchDialogFragment = SearchDialogFragment.newInstance()
@@ -33,12 +35,12 @@ class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteracto
         }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: com.example.model.data.DataModel) {
+            override fun onItemClick(data: DataModel) {
                 startActivity(
                     DescriptionActivity.getIntent(
                         this@MainActivity,
-                        data.text!!,
-                        convertMeaningsToString(data.meanings!!),
+                        data.text,
+                        convertMeaningsToSingleString(data.meanings),
                         data.meanings[0].imageUrl
                     )
                 )
@@ -47,7 +49,6 @@ class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteracto
     private val onSearchClickListener: SearchDialogFragment.OnSearchClickListener =
         object : SearchDialogFragment.OnSearchClickListener {
             override fun onClick(searchWord: String) {
-                isNetworkAvailable = isOnline(applicationContext)
                 if (isNetworkAvailable) {
                     model.getData(searchWord, isNetworkAvailable)
                 } else {
@@ -65,7 +66,7 @@ class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteracto
         initViews()
     }
 
-    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
+    override fun setDataToAdapter(data: List<DataModel>) {
         adapter.setData(data)
     }
 
@@ -85,16 +86,17 @@ class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteracto
     }
 
     private fun iniViewModel() {
-        if (binding.mainActivityRecyclerview.adapter != null) {
+        if (mainActivityRecyclerview.adapter != null) {
             throw IllegalStateException("The ViewModel should be initialised first")
         }
-        val viewModel: MainViewModel by viewModel()
+        val viewModel: MainViewModel by currentScope.inject()
+
         model = viewModel
-        model.subscribe().observe(this@MainActivity, Observer<com.example.model.data.AppState> { renderData(it) })
+        model.subscribe().observe(this@MainActivity, { renderData(it) })
     }
 
     private fun initViews() {
-        binding.searchFab.setOnClickListener(fabClickListener)
-        binding.mainActivityRecyclerview.adapter = adapter
+        searchFAB.setOnClickListener(fabClickListener)
+        mainActivityRecyclerview.adapter = adapter
     }
 }

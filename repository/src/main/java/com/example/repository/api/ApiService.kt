@@ -1,12 +1,11 @@
 package com.example.repository.api
 
-import com.example.model.data.DataModel
-import kotlinx.coroutines.Deferred
-import retrofit2.http.GET
-import retrofit2.http.Query
+import androidx.room.Query
+import com.google.firebase.inject.Deferred
+import geekbrains.ru.model.data.dto.SearchResultDto
 
 interface ApiService {
-
     @GET("words/search")
-    fun searchAsync(@Query("search") wordToSearch: String): Deferred<List<com.example.model.data.DataModel>>
+    fun searchAsync(@Query("search") wordToSearch: String):
+            Deferred<List<SearchResultDto>>
 }
