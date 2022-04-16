@@ -1,26 +1,34 @@
 package com.example.professionalandroidapplicationdevelopment.di
 
 import androidx.room.Room
-import com.example.professionalandroidapplicationdevelopment.model.data.DataModel
-import com.example.professionalandroidapplicationdevelopment.model.datasource.RetrofitImplementation
-import com.example.professionalandroidapplicationdevelopment.model.datasource.RoomDataBaseImplementation
-import com.example.professionalandroidapplicationdevelopment.model.repository.Repository
-import com.example.professionalandroidapplicationdevelopment.model.repository.RepositoryImplementation
-import com.example.professionalandroidapplicationdevelopment.model.repository.RepositoryImplementationLocal
-import com.example.professionalandroidapplicationdevelopment.model.repository.RepositoryLocal
-import com.example.professionalandroidapplicationdevelopment.room.HistoryDataBase
+import com.example.model.data.DataModel
+import com.example.repository.RetrofitImplementation
+import com.example.repository.RoomDataBaseImplementation
+import com.example.repository.Repository
+import com.example.repository.RepositoryImplementation
+import com.example.repository.RepositoryImplementationLocal
+import com.example.repository.RepositoryLocal
+import com.example.repository.room.HistoryDataBase
 import com.example.professionalandroidapplicationdevelopment.view.history.HistoryInteractor
 import com.example.professionalandroidapplicationdevelopment.view.history.HistoryViewModel
 import com.example.professionalandroidapplicationdevelopment.view.main.MainInteractor
 import com.example.professionalandroidapplicationdevelopment.view.main.MainViewModel
-import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val application = module {
     single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
     single { get<HistoryDataBase>().historyDao() }
-    single<Repository<List<DataModel>>> { RepositoryImplementation(RetrofitImplementation()) }
-    single<RepositoryLocal<List<DataModel>>> { RepositoryImplementationLocal(RoomDataBaseImplementation(get()))
+    single<com.example.repository.Repository<List<com.example.model.data.DataModel>>> {
+        com.example.repository.RepositoryImplementation(
+            com.example.repository.RetrofitImplementation()
+        )
+    }
+    single<com.example.repository.RepositoryLocal<List<com.example.model.data.DataModel>>> {
+        com.example.repository.RepositoryImplementationLocal(
+            com.example.repository.RoomDataBaseImplementation(
+                get()
+            )
+        )
     }
 }
 

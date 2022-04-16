@@ -10,8 +10,8 @@ import coil.ImageLoader
 import coil.request.LoadRequest
 import com.example.professionalandroidapplicationdevelopment.R
 import com.example.professionalandroidapplicationdevelopment.databinding.ActivityDescriptionBinding
-import com.example.professionalandroidapplicationdevelopment.utils.network.isOnline
-import com.example.professionalandroidapplicationdevelopment.utils.ui.AlertDialogFragment
+import com.example.utils.network.isOnline
+import com.example.utils.ui.AlertDialogFragment
 
 class DescriptionActivity : AppCompatActivity() {
 

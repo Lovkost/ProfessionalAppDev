@@ -5,27 +5,22 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
-import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.professionalandroidapplicationdevelopment.R
 import com.example.professionalandroidapplicationdevelopment.databinding.ActivityMainBinding
-import com.example.professionalandroidapplicationdevelopment.model.data.AppState
-import com.example.professionalandroidapplicationdevelopment.model.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.professionalandroidapplicationdevelopment.utils.convertMeaningsToString
-import com.example.professionalandroidapplicationdevelopment.utils.network.isOnline
+import com.example.utils.network.isOnline
 import com.example.professionalandroidapplicationdevelopment.view.base.BaseActivity
 import com.example.professionalandroidapplicationdevelopment.view.descriptionscreen.DescriptionActivity
 import com.example.professionalandroidapplicationdevelopment.view.history.HistoryActivity
 import com.example.professionalandroidapplicationdevelopment.view.main.adapter.MainAdapter
 import org.koin.android.compat.ScopeCompat.viewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 private const val BOTTOM_SHEET_FRAGMENT_DIALOG_TAG = "74a54328-5d62-46bf-ab6b-cbf5fgt0-092395"
 
-class MainActivity : BaseActivity<AppState, MainInteractor>() {
+class MainActivity : BaseActivity<com.example.model.data.AppState, MainInteractor>() {
 
     private lateinit var binding: ActivityMainBinding
     override lateinit var model: MainViewModel
@@ -38,7 +33,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
     private val onListItemClickListener: MainAdapter.OnListItemClickListener =
         object : MainAdapter.OnListItemClickListener {
-            override fun onItemClick(data: DataModel) {
+            override fun onItemClick(data: com.example.model.data.DataModel) {
                 startActivity(
                     DescriptionActivity.getIntent(
                         this@MainActivity,
@@ -70,7 +65,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         initViews()
     }
 
-    override fun setDataToAdapter(data: List<DataModel>) {
+    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
         adapter.setData(data)
     }
 
@@ -95,7 +90,7 @@ class MainActivity : BaseActivity<AppState, MainInteractor>() {
         }
         val viewModel: MainViewModel by viewModel()
         model = viewModel
-        model.subscribe().observe(this@MainActivity, Observer<AppState> { renderData(it) })
+        model.subscribe().observe(this@MainActivity, Observer<com.example.model.data.AppState> { renderData(it) })
     }
 
     private fun initViews() {

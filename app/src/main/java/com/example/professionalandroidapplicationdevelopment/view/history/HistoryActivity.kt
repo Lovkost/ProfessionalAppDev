@@ -3,13 +3,12 @@ package com.example.professionalandroidapplicationdevelopment.view.history
 import android.os.Bundle
 import androidx.lifecycle.Observer
 import com.example.professionalandroidapplicationdevelopment.databinding.ActivityHistoryBinding
-import com.example.professionalandroidapplicationdevelopment.model.data.AppState
-import com.example.professionalandroidapplicationdevelopment.model.data.DataModel
+import com.example.model.data.AppState
+import com.example.model.data.DataModel
 import com.example.professionalandroidapplicationdevelopment.view.base.BaseActivity
 import org.koin.android.compat.ScopeCompat.viewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
+class HistoryActivity : BaseActivity<com.example.model.data.AppState, HistoryInteractor>() {
 
     private lateinit var binding: ActivityHistoryBinding
     override lateinit var model: HistoryViewModel
@@ -29,7 +28,7 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
         model.getData("", false)
     }
 
-    override fun setDataToAdapter(data: List<DataModel>) {
+    override fun setDataToAdapter(data: List<com.example.model.data.DataModel>) {
         adapter.setData(data)
     }
 
@@ -39,7 +38,7 @@ class HistoryActivity : BaseActivity<AppState, HistoryInteractor>() {
         }
         val viewModel: HistoryViewModel by viewModel()
         model = viewModel
-        model.subscribe().observe(this@HistoryActivity, Observer<AppState> { renderData(it) })
+        model.subscribe().observe(this@HistoryActivity, Observer<com.example.model.data.AppState> { renderData(it) })
     }
 
     private fun initViews() {
