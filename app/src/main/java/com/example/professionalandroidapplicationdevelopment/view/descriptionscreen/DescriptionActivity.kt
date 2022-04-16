@@ -2,9 +2,11 @@ package com.example.professionalandroidapplicationdevelopment.view.descriptionsc
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Shader
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import coil.ImageLoader
 import coil.request.LoadRequest
@@ -17,6 +19,7 @@ class DescriptionActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDescriptionBinding
 
+    @RequiresApi(31)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDescriptionBinding.inflate(layoutInflater)
@@ -42,6 +45,7 @@ class DescriptionActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
+    @RequiresApi(31)
     private fun setData() {
         val bundle = intent.extras
         binding.descriptionHeader.text = bundle?.getString(WORD_EXTRA)
@@ -54,6 +58,7 @@ class DescriptionActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(31)
     private fun startLoadingOrShowError() {
         OnlineLiveData(this).observe(
             this@DescriptionActivity,
@@ -79,6 +84,7 @@ class DescriptionActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(31)
     private fun useCoilToLoadPhoto(imageView: ImageView, imageLink: String) {
         val request = LoadRequest.Builder(this)
             .data("https:$imageLink")
@@ -86,6 +92,9 @@ class DescriptionActivity : AppCompatActivity() {
                 onStart = {},
                 onSuccess = { result ->
                     imageView.setImageDrawable(result)
+                    val blurEffect = RenderEffect.createBlurEffect(15f, 0f, Shader.TileMode.MIRROR)
+                    imageView.setRenderEffect(blurEffect)
+                    //binding.root.setRenderEffect(blurEffect)
                 },
                 onError = {
                     imageView.setImageResource(R.drawable.ic_load_error_vector)
