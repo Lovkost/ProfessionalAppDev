@@ -1,25 +1,39 @@
 package com.example.professionalandroidapplicationdevelopment.di
 
-import com.example.professionalandroidapplicationdevelopment.model.data.DataModel
-import com.example.professionalandroidapplicationdevelopment.model.datasource.RetrofitImplementation
-import com.example.professionalandroidapplicationdevelopment.model.datasource.RoomDataBaseImplementation
-import com.example.professionalandroidapplicationdevelopment.model.repository.Repository
-import com.example.professionalandroidapplicationdevelopment.model.repository.RepositoryImplementation
+import androidx.room.Room
+import com.example.professionalandroidapplicationdevelopment.view.history.HistoryActivity
+import com.example.professionalandroidapplicationdevelopment.view.history.HistoryInteractor
+import com.example.professionalandroidapplicationdevelopment.view.history.HistoryViewModel
+import com.example.professionalandroidapplicationdevelopment.view.main.MainActivity
 import com.example.professionalandroidapplicationdevelopment.view.main.MainInteractor
 import com.example.professionalandroidapplicationdevelopment.view.main.MainViewModel
+import com.example.repository.*
+import com.example.repository.room.HistoryDataBase
+import geekbrains.ru.model.data.dto.SearchResultDto
+import org.koin.android.compat.ScopeCompat.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val application = module {
-    single<Repository<List<DataModel>>>(named(NAME_REMOTE)) { RepositoryImplementation(
-        RetrofitImplementation()
-    ) }
-    single<Repository<List<DataModel>>>(named(NAME_LOCAL)) { RepositoryImplementation(
-        RoomDataBaseImplementation()
-    ) }
+    single { Room.databaseBuilder(get(), HistoryDataBase::class.java, "HistoryDB").build() }
+    single { get<geekbrains.ru.model.room.HistoryDataBase>().historyDao() }
+    single<Repository<List<SearchResultDto>>> { RepositoryImplementation(RetrofitImplementation()) }
+    single<RepositoryLocal<List<SearchResultDto>>> {
+        RepositoryImplementationLocal(RoomDataBaseImplementation(get()))
+    }
 }
 
 val mainScreen = module {
-    factory { MainInteractor(get(named(NAME_REMOTE)), get(named(NAME_LOCAL))) }
-    factory { MainViewModel(get()) }
+    scope(named<MainActivity>()) {
+        scoped { MainInteractor(get(), get()) }
+        viewModel { MainViewModel(get()) }
+    }
+}
+
+val historyScreen = module {
+    scope(named<HistoryActivity>()) {
+        scoped { HistoryInteractor(get(), get()) }
+        viewModel { HistoryViewModel(get()) }
+    }
 }
